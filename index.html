@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cheat Burgers — Smash Burgers · Oude Markt · Leuven</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
+  <style>
+    :root {
+      --black: #0d0d0d;
+      --dark: #111111;
+      --card: #1a1a1a;
+      --red: #e02020;
+      --red-dark: #b81818;
+      --yellow: #f5c518;
+      --off-white: #f5f0e8;
+      --muted: rgba(245,240,232,0.48);
+      --border: rgba(245,240,232,0.08);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--black); font-family: 'DM Sans', sans-serif; color: var(--off-white); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulseGlow {
+      0%,100% { opacity: 0.7; }
+      50%      { opacity: 1; }
+    }
+
+    .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── NAVBAR ── */
+    #navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: var(--black); border-bottom: 1px solid var(--border);
+      padding: 0 40px;
+    }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto;
+      height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    }
+    .nav-logo { display: flex; flex-direction: column; gap: 0; text-decoration: none; line-height: 1; }
+    .logo-main { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 0.03em; line-height: 1; }
+    .logo-cheat { color: var(--red); }
+    .logo-burgers { color: var(--yellow); }
+    .logo-city {
+      font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 9px;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted);
+    }
+    .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+    .nav-links a {
+      font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 13px;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      color: var(--off-white); text-decoration: none; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--yellow); }
+    .nav-right { display: flex; align-items: center; gap: 16px; }
+    .nav-cta {
+      background: var(--red); color: var(--off-white);
+      padding: 10px 22px; border-radius: 3px;
+      font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 12px;
+      letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .nav-cta:hover { background: var(--red-dark); transform: translateY(-1px); }
+    .lang-toggle { display: flex; gap: 3px; }
+    .lang-btn {
+      background: transparent; border: 1.5px solid rgba(245,197,24,0.22);
+      color: var(--muted); padding: 4px 9px; border-radius: 3px;
+      font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 11px;
+      letter-spacing: 0.1em; cursor: pointer; transition: all 0.2s;
+    }
+    .lang-btn.active { background: var(--yellow); color: var(--black); border-color: var(--yellow); }
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 4px;
+    }
+    .hamburger span { width: 22px; height: 2px; background: var(--off-white); display: block; transition: all 0.25s; }
+    .mobile-menu {
+      display: none; flex-direction: column; background: #111; border-top: 1px solid var(--border);
+    }
+    .mobile-menu a {
+      padding: 14px 40px; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 14px;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      color: var(--off-white); text-decoration: none; border-bottom: 1px solid var(--border);
+      transition: color 0.2s;
+    }
+    .mobile-menu a:hover { color: var(--yellow); }
+    .mobile-menu.open { display: flex; }
+    @media (max-width: 768px) {
+      #navbar { padding: 0 20px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .nav-cta { display: none; }
+    }
+
+    /* ── HERO ── */
+    #hero { display: flex; width: 100%; min-height: 100vh; overflow: hidden; }
+    .hero-left {
+      flex: 0 0 55%; display: flex; align-items: center;
+      background: var(--black); padding: 100px 60px 80px; position: relative;
+    }
+    .hero-right {
+      flex: 0 0 45%;
+      background-image: url('https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=900');
+      background-size: cover; background-position: center; position: relative;
+    }
+    .hero-right::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to right, var(--black) 0%, transparent 35%);
+    }
+    .hero-content { max-width: 540px; width: 100%; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(224,32,32,0.1); border: 1px solid rgba(224,32,32,0.28);
+      border-radius: 3px; padding: 7px 16px; margin-bottom: 28px;
+      font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 12px;
+      color: rgba(245,240,232,0.82); letter-spacing: 0.06em;
+      animation: fadeUp 0.7s ease 0.1s both;
+    }
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif; line-height: 0.88; letter-spacing: 0.02em;
+      margin-bottom: 20px; animation: fadeUp 0.7s ease 0.2s both;
+    }
+    .hero-title .t-cheat  { display: block; font-size: clamp(72px,10vw,136px); color: var(--red); }
+    .hero-title .t-burgers{ display: block; font-size: clamp(72px,10vw,136px); color: var(--yellow); }
+    .hero-sub {
+      font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400;
+      font-size: clamp(17px,2.1vw,23px); color: rgba(245,240,232,0.70);
+      margin-bottom: 28px; line-height: 1.45; animation: fadeUp 0.7s ease 0.35s both;
+    }
+    .hero-icons {
+      display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-bottom: 36px;
+      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 13px;
+      color: rgba(245,240,232,0.55); animation: fadeUp 0.7s ease 0.45s both;
+    }
+    .hero-icons span { display: flex; align-items: center; gap: 6px; }
+    .hero-btns {
+      display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 30px;
+      animation: fadeUp 0.7s ease 0.55s both;
+    }
+    .btn-red {
+      background: var(--red); color: var(--off-white); padding: 15px 32px; border-radius: 3px;
+      font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 13px;
+      letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none;
+      border: none; cursor: pointer; display: inline-block;
+      transition: background 0.2s, transform 0.2s;
+      box-shadow: 0 4px 20px rgba(224,32,32,0.28);
+    }
+    .btn-red:hover { background: var(--red-dark); transform: translateY(-2px); }
+    .btn-yellow-outline {
+      background: transparent; color: var(--yellow); padding: 14px 32px; border-radius: 3px;
+      font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 13px;
+      letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none;
+      border: 2px solid rgba(245,197,24,0.45); display: inline-block;
+      transition: border-color 0.2s, background 0.2s, transform 0.2s;
+    }
+    .btn-yellow-outline:hover { border-color: var(--yellow); background: rgba(245,197,24,0.07); transform: translateY(-2px); }
+    .hero-open {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 13px;
+      letter-spacing: 0.06em; color: var(--muted); animation: fadeUp 0.7s ease 0.65s both;
+    }
+    .pulse-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #4ade80; box-shadow: 0 0 8px #4ade80;
+      animation: pulseGlow 2s ease-in-out infinite; flex-shrink: 0;
+    }
+    @media (max-width: 768px) {
+      #hero { flex-direction: column; }
+      .hero-left { flex: none; width: 100%; padding: 90px 24px 56px; }
+      .hero-right { flex: none; width: 100%; min-height: 55vw; }
+      .hero-right::after { background: linear-gradient(to bottom, var(--black) 0%, transparent 45%); }
+    }
+
+    /* ── BADGES STRIP ── */
+    #strip {
+      background: var(--card); padding: 44px 40px;
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    }
+    .strip-grid {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+    }
+    .strip-item {
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      padding: 24px 16px; border: 1px solid var(--border); border-radius: 3px;
+      text-align: center; transition: border-color 0.2s;
+    }
+    .strip-item:hover { border-color: rgba(224,32,32,0.3); }
+    .strip-emoji { font-size: 26px; }
+    .strip-title {
+      font-family: 'Bebas Neue', sans-serif; font-size: 17px; letter-spacing: 0.05em;
+      color: var(--off-white);
+    }
+    @media (max-width: 768px) {
+      #strip { padding: 36px 20px; }
+      .strip-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    }
+
+    /* ── MENU SECTIONS ── */
+    .menu-section { padding: 96px 40px; }
+    .menu-section.bg-black  { background: var(--black); }
+    .menu-section.bg-dark   { background: var(--dark); }
+    .menu-inner { max-width: 1200px; margin: 0 auto; }
+    .section-eyebrow {
+      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 11px;
+      letter-spacing: 0.26em; text-transform: uppercase; color: var(--red); margin-bottom: 10px;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(40px,6vw,76px); letter-spacing: 0.02em; line-height: 0.95;
+      color: var(--off-white); margin-bottom: 48px;
+    }
+    .accent-red { color: var(--red); }
+    .accent-yellow { color: var(--yellow); }
+
+    /* Large feature cards */
+    .burger-grid-featured {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 16px;
+    }
+    .burger-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 3px;
+      padding: 26px 22px; transition: border-color 0.22s, transform 0.22s;
+    }
+    .burger-card:hover { border-color: rgba(224,32,32,0.35); transform: translateY(-3px); }
+    .burger-emoji { font-size: 28px; margin-bottom: 14px; display: block; }
+    .burger-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+    .burger-name {
+      font-family: 'Bebas Neue', sans-serif; font-size: 21px; letter-spacing: 0.03em;
+      color: var(--off-white); line-height: 1.1;
+    }
+    .burger-price {
+      font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 0.02em;
+      color: var(--yellow); white-space: nowrap; flex-shrink: 0;
+    }
+    .burger-badge {
+      display: inline-block; background: var(--red); color: var(--off-white);
+      font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 9px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 2px 7px; border-radius: 2px; margin-top: 4px;
+    }
+    .burger-desc {
+      font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 13px;
+      color: var(--muted); line-height: 1.65;
+    }
+
+    /* Small row cards */
+    .burger-grid-small {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+    }
+    .burger-card-sm {
+      background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 3px;
+      padding: 18px 20px; display: flex; justify-content: space-between; align-items: center;
+      gap: 12px; transition: border-color 0.2s;
+    }
+    .burger-card-sm:hover { border-color: rgba(245,197,24,0.2); }
+    .burger-sm-name {
+      font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 14px; color: var(--off-white);
+    }
+    .burger-sm-price {
+      font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--yellow); flex-shrink: 0;
+    }
+
+    @media (max-width: 768px) {
+      .menu-section { padding: 68px 20px; }
+      .burger-grid-featured { grid-template-columns: 1fr; }
+      .burger-grid-small { grid-template-columns: 1fr; }
+    }
+
+    /* ── SIDES & CHICKEN ── */
+    .sides-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
+    }
+    .sides-col-title {
+      font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400;
+      font-size: 18px; color: var(--muted); margin-bottom: 14px;
+      padding-bottom: 10px; border-bottom: 1px solid var(--border);
+    }
+    .side-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 11px 0; border-bottom: 1px solid var(--border);
+    }
+    .side-row:last-child { border-bottom: none; }
+    .side-name { font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 14px; color: var(--off-white); }
+    .side-price { font-family: 'Bebas Neue', sans-serif; font-size: 18px; color: var(--yellow); }
+    @media (max-width: 768px) { .sides-grid { grid-template-columns: 1fr; gap: 32px; } }
+
+    /* ── DELIVERY ── */
+    #delivery { background: var(--red); padding: 80px 40px; text-align: center; }
+    .delivery-inner { max-width: 860px; margin: 0 auto; }
+    .delivery-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(38px,6vw,68px); letter-spacing: 0.02em; line-height: 1;
+      color: var(--off-white); margin-bottom: 14px;
+    }
+    .delivery-sub {
+      font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 16px;
+      color: rgba(245,240,232,0.8); margin-bottom: 44px;
+      max-width: 480px; margin-left: auto; margin-right: auto; line-height: 1.6;
+    }
+    .delivery-cards {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 660px; margin: 0 auto;
+    }
+    .delivery-card {
+      background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 3px; padding: 28px 22px; text-align: left;
+    }
+    .delivery-card-emoji { font-size: 28px; margin-bottom: 12px; display: block; }
+    .delivery-card-title {
+      font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 0.03em;
+      color: var(--off-white); margin-bottom: 8px;
+    }
+    .delivery-card-desc {
+      font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 13px;
+      color: rgba(245,240,232,0.72); margin-bottom: 18px; line-height: 1.6;
+    }
+    .btn-white-outline {
+      display: inline-block; background: transparent; color: var(--off-white);
+      padding: 9px 20px; border-radius: 3px; border: 1.5px solid rgba(245,240,232,0.55);
+      font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 11px;
+      letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .btn-white-outline:hover { background: rgba(255,255,255,0.1); border-color: var(--off-white); }
+    @media (max-width: 768px) {
+      #delivery { padding: 60px 20px; }
+      .delivery-cards { grid-template-columns: 1fr; }
+    }
+
+    /* ── ABOUT ── */
+    #about { background: var(--dark); padding: 100px 40px; }
+    .about-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center;
+    }
+    .about-italic {
+      font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400;
+      font-size: 20px; color: var(--yellow); margin-bottom: 22px; line-height: 1.4;
+    }
+    .about-body {
+      font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 16px;
+      line-height: 1.85; color: var(--muted); margin-bottom: 36px;
+    }
+    .about-stats { display: flex; gap: 36px; flex-wrap: wrap; }
+    .about-stat-val {
+      font-family: 'Bebas Neue', sans-serif; font-size: 30px; letter-spacing: 0.03em;
+      color: var(--red); display: block; margin-bottom: 2px;
+    }
+    .about-stat-label {
+      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 10px;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);
+    }
+    .about-img { border-radius: 3px; overflow: hidden; border: 2px solid rgba(224,32,32,0.2); }
+    .about-img img { width: 100%; display: block; aspect-ratio: 4/5; object-fit: cover; }
+    @media (max-width: 768px) {
+      #about { padding: 72px 20px; }
+      .about-inner { grid-template-columns: 1fr; gap: 40px; }
+      .about-img { order: -1; }
+    }
+
+    /* ── CONTACT & HOURS ── */
+    #contact { background: var(--black); padding: 100px 40px; }
+    .contact-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: start;
+    }
+    .contact-info { display: flex; flex-direction: column; gap: 16px; margin-bottom: 28px; }
+    .contact-row { display: flex; gap: 14px; align-items: flex-start; }
+    .contact-icon {
+      width: 34px; height: 34px; border-radius: 3px;
+      background: rgba(224,32,32,0.1); border: 1px solid rgba(224,32,32,0.18);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      color: var(--red); font-size: 13px;
+    }
+    .contact-val {
+      font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 15px;
+      color: var(--off-white); line-height: 1.5; padding-top: 6px;
+    }
+    .contact-val a { color: var(--off-white); text-decoration: none; }
+    .contact-val a:hover { color: var(--yellow); }
+
+    .hours-label {
+      font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 0.05em;
+      color: var(--off-white); margin-bottom: 14px;
+    }
+    .hours-table { width: 100%; border-collapse: collapse; margin-bottom: 28px; }
+    .hours-table tr { border-bottom: 1px solid var(--border); }
+    .hours-table tr:last-child { border-bottom: none; }
+    .hours-table td {
+      padding: 10px 2px;
+      font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 14px; color: var(--muted);
+    }
+    .hours-table td:last-child { text-align: right; color: var(--yellow); font-weight: 400; }
+    .hours-table tr.today td { color: var(--off-white); }
+    .hours-table tr.today .day-cell::after { content: ' ●'; color: var(--red); font-size: 10px; }
+    .map-wrap { border-radius: 3px; overflow: hidden; border: 1px solid var(--border); }
+    .map-wrap iframe { display: block; }
+
+    .form-title {
+      font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 0.03em;
+      color: var(--off-white); margin-bottom: 28px;
+    }
+    .form-group { margin-bottom: 16px; }
+    .form-label {
+      display: block; font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 10px;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 7px;
+    }
+    .form-input, .form-textarea {
+      width: 100%; background: var(--card); border: 1px solid var(--border);
+      border-radius: 3px; padding: 13px 15px;
+      font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 15px;
+      color: var(--off-white); outline: none; transition: border-color 0.2s;
+    }
+    .form-input:focus, .form-textarea:focus { border-color: rgba(224,32,32,0.5); }
+    .form-textarea { resize: vertical; min-height: 110px; }
+    .form-submit {
+      margin-top: 8px; padding: 13px 30px; background: var(--red); color: var(--off-white);
+      border: none; border-radius: 3px; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 12px;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .form-submit:hover { background: var(--red-dark); transform: translateY(-1px); }
+    .form-success {
+      display: none; padding: 20px;
+      background: rgba(224,32,32,0.1); border: 1px solid rgba(224,32,32,0.22);
+      border-radius: 3px; text-align: center;
+      font-family: 'Playfair Display', serif; font-style: italic; font-size: 18px;
+      color: var(--yellow);
+    }
+    @media (max-width: 768px) {
+      #contact { padding: 72px 20px; }
+      .contact-inner { grid-template-columns: 1fr; gap: 48px; }
+    }
+
+    /* ── FOOTER ── */
+    #footer {
+      background: var(--black); border-top: 1px solid var(--border); padding: 32px 40px 24px;
+    }
+    .footer-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;
+    }
+    .footer-brand .logo-main { font-size: 22px; }
+    .footer-tagline {
+      font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 11px;
+      letter-spacing: 0.08em; color: var(--muted); margin-top: 2px;
+    }
+    .footer-copy {
+      font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 11px;
+      letter-spacing: 0.06em; color: rgba(245,240,232,0.25); text-align: center;
+    }
+    .footer-links { display: flex; gap: 16px; align-items: center; }
+    .footer-links a {
+      font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 13px;
+      color: var(--red); text-decoration: none; transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--yellow); }
+    @media (max-width: 768px) {
+      #footer { padding: 28px 20px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; gap: 14px; }
+      .footer-copy { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ━━━ NAVBAR ━━━ -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="logo-main"><span class="logo-cheat">CHEAT</span><span class="logo-burgers"> BURGERS</span></div>
+      <span class="logo-city">Leuven</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#menu-potato" data-lang="nav_menu">Menu</a></li>
+      <li><a href="#about" data-lang="nav_about">Over ons</a></li>
+      <li><a href="#delivery" data-lang="nav_delivery">Bezorging</a></li>
+      <li><a href="#contact" data-lang="nav_contact">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="lang-toggle">
+        <button class="lang-btn active" onclick="setLang('nl')">NL</button>
+        <button class="lang-btn" onclick="setLang('en')">EN</button>
+      </div>
+      <a href="https://www.cheat-burgers-leuven.be" target="_blank" rel="noopener" class="nav-cta" data-lang="nav_cta">Bestel nu</a>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#menu-potato" data-lang="nav_menu" onclick="closeMobile()">Menu</a>
+    <a href="#about" data-lang="nav_about" onclick="closeMobile()">Over ons</a>
+    <a href="#delivery" data-lang="nav_delivery" onclick="closeMobile()">Bezorging</a>
+    <a href="#contact" data-lang="nav_contact" onclick="closeMobile()">Contact</a>
+    <a href="https://www.cheat-burgers-leuven.be" target="_blank" rel="noopener" data-lang="nav_cta" style="color:var(--yellow);font-weight:600;">Bestel nu</a>
+  </div>
+</nav>
+
+<!-- ━━━ HERO ━━━ -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-content">
+      <div class="hero-badge">🔥 100% Halal · Oude Markt 33 · Leuven</div>
+      <h1 class="hero-title">
+        <span class="t-cheat">CHEAT</span>
+        <span class="t-burgers">BURGERS</span>
+      </h1>
+      <p class="hero-sub" data-lang="hero_sub">De beste smashburgers van Leuven</p>
+      <div class="hero-icons">
+        <span>🍔 <span data-lang="icon_smash">Smash</span></span>
+        <span>✅ Halal</span>
+        <span>🌙 <span data-lang="icon_late">Open tot 05:00</span></span>
+      </div>
+      <div class="hero-btns">
+        <a href="#menu-potato" class="btn-red" data-lang="hero_cta1">Bekijk ons menu</a>
+        <a href="https://www.cheat-burgers-leuven.be" target="_blank" rel="noopener" class="btn-yellow-outline" data-lang="hero_cta2">Bestel online</a>
+      </div>
+      <div class="hero-open">
+        <div class="pulse-dot"></div>
+        <span data-lang="hero_open">Vandaag open · 18:00 – 05:00</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right"></div>
+</section>
+
+<!-- ━━━ BADGES STRIP ━━━ -->
+<section id="strip">
+  <div class="strip-grid">
+    <div class="strip-item fade-up">
+      <div class="strip-emoji">🍔</div>
+      <div class="strip-title" data-lang="badge1">Vers gesmashed</div>
+    </div>
+    <div class="strip-item fade-up" style="transition-delay:0.1s">
+      <div class="strip-emoji">✅</div>
+      <div class="strip-title" data-lang="badge2">100% Halal</div>
+    </div>
+    <div class="strip-item fade-up" style="transition-delay:0.2s">
+      <div class="strip-emoji">🌙</div>
+      <div class="strip-title" data-lang="badge3">Open tot 05:00</div>
+    </div>
+    <div class="strip-item fade-up" style="transition-delay:0.3s">
+      <div class="strip-emoji">🛵</div>
+      <div class="strip-title" data-lang="badge4">Bezorging beschikbaar</div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━ MENU: MARTIN'S POTATO BUN ━━━ -->
+<section id="menu-potato" class="menu-section bg-black">
+  <div class="menu-inner">
+    <div class="section-eyebrow fade-up">Signature Menu</div>
+    <h2 class="section-title fade-up">MARTIN'S <span class="accent-red">POTATO BUN</span></h2>
+    <div class="burger-grid-featured">
+      <div class="burger-card fade-up">
+        <span class="burger-emoji">🍔</span>
+        <div class="burger-card-header">
+          <div>
+            <div class="burger-name">American Cheat Burger</div>
+          </div>
+          <div class="burger-price">€12.99</div>
+        </div>
+        <div class="burger-desc" data-lang="b1_desc">Potato bun, gesmashed Angus beef, American cheese, ijsbergsla, augurk, ui, tomaat, smash saus</div>
+      </div>
+      <div class="burger-card fade-up" style="transition-delay:0.1s">
+        <span class="burger-emoji">🍔</span>
+        <div class="burger-card-header">
+          <div>
+            <div class="burger-name">American Double Cheat</div>
+            <div><span class="burger-badge" data-lang="bestseller">Bestseller</span></div>
+          </div>
+          <div class="burger-price">€13.99</div>
+        </div>
+        <div class="burger-desc" data-lang="b2_desc">2x gesmashed Angus beef, 2x American cheese, alle toppings, crinkle fries inbegrepen</div>
+      </div>
+      <div class="burger-card fade-up" style="transition-delay:0.2s">
+        <span class="burger-emoji">🔥</span>
+        <div class="burger-card-header">
+          <div><div class="burger-name">Beast Burger</div></div>
+          <div class="burger-price">€16.99</div>
+        </div>
+        <div class="burger-desc" data-lang="b3_desc">Voor de echte hongerigen — onze grootste burger</div>
+      </div>
+    </div>
+    <div class="burger-grid-small fade-up">
+      <div class="burger-card-sm">
+        <span class="burger-sm-name">American Beef Bacon</span>
+        <span class="burger-sm-price">€13.99</span>
+      </div>
+      <div class="burger-card-sm">
+        <span class="burger-sm-name">Smokey Chicken Burger</span>
+        <span class="burger-sm-price">€13.99</span>
+      </div>
+      <div class="burger-card-sm">
+        <span class="burger-sm-name">American Triple Cheat</span>
+        <span class="burger-sm-price">€16.99</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━ MENU: BRIOCHE BUN ━━━ -->
+<section id="menu-brioche" class="menu-section bg-dark">
+  <div class="menu-inner">
+    <div class="section-eyebrow fade-up">Brioche Collection</div>
+    <h2 class="section-title fade-up">BRIOCHE <span class="accent-yellow">BUN BURGERS</span></h2>
+    <div class="burger-grid-featured">
+      <div class="burger-card fade-up">
+        <span class="burger-emoji">🍔</span>
+        <div class="burger-card-header">
+          <div><div class="burger-name">Brioche Cheeseburger</div></div>
+          <div class="burger-price">€12.99</div>
+        </div>
+        <div class="burger-desc" data-lang="bri1_desc">Brioche bun, gesmashed Angus beef, American cheese, ijsbergsla, augurk, ui, tomaat, smash saus</div>
+      </div>
+      <div class="burger-card fade-up" style="transition-delay:0.1s">
+        <span class="burger-emoji">🥓</span>
+        <div class="burger-card-header">
+          <div><div class="burger-name">Brioche Beef Bacon</div></div>
+          <div class="burger-price">€13.99</div>
+        </div>
+        <div class="burger-desc" data-lang="bri2_desc">Brioche bun, gesmashed Angus beef, halal bacon, American cheese, alle toppings</div>
+      </div>
+      <div class="burger-card fade-up" style="transition-delay:0.2s">
+        <span class="burger-emoji">🌶️</span>
+        <div class="burger-card-header">
+          <div><div class="burger-name">BBQ Double Bacon</div></div>
+          <div class="burger-price" data-lang="ask_price">Vraag prijs</div>
+        </div>
+        <div class="burger-desc" data-lang="bri3_desc">Barbecuesaus, 2x gesmashed Angus beef, triple cheddar, bacon, jalapeños</div>
+      </div>
+    </div>
+    <div class="burger-grid-small fade-up" style="margin-top:16px;">
+      <div class="burger-card-sm">
+        <span class="burger-sm-name">Brioche Double Cheat</span>
+        <span class="burger-sm-price">€13.99</span>
+      </div>
+      <div class="burger-card-sm">
+        <span class="burger-sm-name" data-lang="brioche_chicken">Brioche Chicken Burger</span>
+        <span class="burger-sm-price">€13.99</span>
+      </div>
+      <div class="burger-card-sm">
+        <span class="burger-sm-name" data-lang="two_buns">2 Bun Opties beschikbaar</span>
+        <span class="burger-sm-price" style="color:var(--muted);font-size:14px;font-family:'DM Sans'">Martin's / Brioche</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━ SIDES & CHICKEN ━━━ -->
+<section id="sides" class="menu-section bg-black">
+  <div class="menu-inner">
+    <div class="section-eyebrow fade-up">Extra's</div>
+    <h2 class="section-title fade-up">SIDES <span class="accent-red">&</span> <span class="accent-yellow">CHICKEN</span></h2>
+    <div class="sides-grid">
+      <div class="fade-up">
+        <div class="sides-col-title" data-lang="sides_chicken_label">Chicken & Sides</div>
+        <div class="side-row">
+          <span class="side-name" data-lang="side1">Buffalo Chicken Wings BBQ</span>
+          <span class="side-price">€7.50</span>
+        </div>
+        <div class="side-row">
+          <span class="side-name" data-lang="side2">Chicken Nuggets</span>
+          <span class="side-price">€4.99</span>
+        </div>
+        <div class="side-row">
+          <span class="side-name" data-lang="side3">Mozzarella Sticks</span>
+          <span class="side-price">€4.99</span>
+        </div>
+        <div class="side-row">
+          <span class="side-name" data-lang="side4">Onion Rings</span>
+          <span class="side-price">€4.50</span>
+        </div>
+      </div>
+      <div class="fade-up" style="transition-delay:0.12s">
+        <div class="sides-col-title" data-lang="sides_menus_label">Menu's</div>
+        <div class="side-row">
+          <span class="side-name" data-lang="menu1_name">Spicy Tenders Menu (6 pcs + fries + cola)</span>
+          <span class="side-price">€12.99</span>
+        </div>
+        <div class="side-row">
+          <span class="side-name" data-lang="menu2_name">Nuggets Menu (6 pcs + fries + cola)</span>
+          <span class="side-price">€10.99</span>
+        </div>
+        <div class="side-row">
+          <span class="side-name" data-lang="menu3_name">Spicy Wings Menu (6 pcs + fries + cola)</span>
+          <span class="side-price">€11.99</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━ DELIVERY ━━━ -->
+<section id="delivery">
+  <div class="delivery-inner fade-up">
+    <h2 class="delivery-title" data-lang="delivery_title">Vanavond trek? Wij bezorgen!</h2>
+    <p class="delivery-sub" data-lang="delivery_sub">Bestel via Deliveroo of Takeaway.com en geniet van je cheat meal thuis.</p>
+    <div class="delivery-cards">
+      <div class="delivery-card">
+        <span class="delivery-card-emoji">🛵</span>
+        <div class="delivery-card-title">Deliveroo</div>
+        <p class="delivery-card-desc" data-lang="deliveroo_desc">Bestel via Deliveroo, binnen 32 minuten thuis</p>
+        <a href="https://deliveroo.be" target="_blank" rel="noopener" class="btn-white-outline" data-lang="deliveroo_cta">Bestel via Deliveroo</a>
+      </div>
+      <div class="delivery-card">
+        <span class="delivery-card-emoji">📱</span>
+        <div class="delivery-card-title">Takeaway.com</div>
+        <p class="delivery-card-desc" data-lang="takeaway_desc">Ook beschikbaar op Takeaway.com</p>
+        <a href="https://www.takeaway.com" target="_blank" rel="noopener" class="btn-white-outline" data-lang="takeaway_cta">Bestel via Takeaway</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━ ABOUT ━━━ -->
+<section id="about">
+  <div class="about-inner">
+    <div class="fade-up">
+      <div class="section-eyebrow">Since 2018</div>
+      <h2 class="section-title" data-lang="about_title">Geen poespas.<br><span class="accent-red">Gewoon goeie burgers.</span></h2>
+      <p class="about-italic" data-lang="about_italic">Jouw cheat day verdient het beste.</p>
+      <p class="about-body" data-lang="about_body">Cheat Burgers opende in 2018 op de iconische Oude Markt van Leuven. Elke burger wordt vers bereid met Angus beef, gesmashed tot perfectie. Open tot diep in de nacht — want cravings houden geen rekening met het uur.</p>
+      <div class="about-stats">
+        <div>
+          <span class="about-stat-val">2018</span>
+          <span class="about-stat-label" data-lang="stat1">Since</span>
+        </div>
+        <div>
+          <span class="about-stat-val">100%</span>
+          <span class="about-stat-label">Halal</span>
+        </div>
+        <div>
+          <span class="about-stat-val">05:00</span>
+          <span class="about-stat-label" data-lang="stat3">Open tot</span>
+        </div>
+      </div>
+    </div>
+    <div class="about-img fade-up" style="transition-delay:0.15s">
+      <img src="https://images.unsplash.com/photo-1561758033-d89a9ad46330?w=800" alt="Cheat Burgers" />
+    </div>
+  </div>
+</section>
+
+<!-- ━━━ HOURS & CONTACT ━━━ -->
+<section id="contact">
+  <div class="contact-inner">
+    <!-- Left: Info + Map -->
+    <div class="fade-up">
+      <div class="section-eyebrow" data-lang="contact_eyebrow">Contact</div>
+      <h2 class="section-title" style="margin-bottom:32px;">OUDE MARKT<br><span class="accent-yellow">33</span></h2>
+      <div class="contact-info">
+        <div class="contact-row">
+          <div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div>
+          <div class="contact-val">Oude Markt 33, 3000 Leuven</div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon"><i class="fa-solid fa-phone"></i></div>
+          <div class="contact-val">
+            <a href="tel:+3216771612">+32 16 77 16 12</a><br>
+            <a href="tel:+32487110074">+32 487 11 00 74</a>
+          </div>
+        </div>
+      </div>
+      <div class="hours-label" data-lang="hours_label">Openingsuren</div>
+      <table class="hours-table" id="hours-table">
+        <tr id="row-mon"><td class="day-cell" data-lang="day_mon">Maandag</td><td>18:00 – 03:45</td></tr>
+        <tr id="row-tue"><td class="day-cell" data-lang="day_tue">Dinsdag</td><td>18:00 – 03:45</td></tr>
+        <tr id="row-wed"><td class="day-cell" data-lang="day_wed">Woensdag</td><td>18:00 – 03:45</td></tr>
+        <tr id="row-thu"><td class="day-cell" data-lang="day_thu">Donderdag</td><td>18:30 – 04:00</td></tr>
+        <tr id="row-fri"><td class="day-cell" data-lang="day_fri">Vrijdag</td><td>18:30 – 05:00</td></tr>
+        <tr id="row-sat"><td class="day-cell" data-lang="day_sat">Zaterdag</td><td>18:15 – 05:00</td></tr>
+        <tr id="row-sun"><td class="day-cell" data-lang="day_sun">Zondag</td><td>18:30 – 04:45</td></tr>
+      </table>
+      <div class="map-wrap">
+        <iframe
+          src="https://www.google.com/maps?q=Oude+Markt+33,+3000+Leuven&output=embed"
+          width="100%" height="300"
+          style="border:0;border-radius:3px;"
+          allowfullscreen loading="lazy"
+          title="Cheat Burgers Leuven"></iframe>
+      </div>
+    </div>
+    <!-- Right: Form -->
+    <div class="fade-up" style="transition-delay:0.15s">
+      <div class="form-title" data-lang="form_title">Stuur een bericht</div>
+      <form id="contact-form" onsubmit="submitForm(event)">
+        <div class="form-group">
+          <label class="form-label" data-lang="form_name">Naam</label>
+          <input class="form-input" type="text" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input class="form-input" type="email" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" data-lang="form_message">Bericht</label>
+          <textarea class="form-textarea" required></textarea>
+        </div>
+        <button type="submit" class="form-submit" data-lang="form_submit">Verstuur →</button>
+      </form>
+      <div class="form-success" id="form-success" data-lang="form_success">Bedankt! We antwoorden zo snel mogelijk.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━ FOOTER ━━━ -->
+<footer id="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo-main"><span class="logo-cheat">CHEAT</span><span class="logo-burgers"> BURGERS</span></div>
+      <div class="footer-tagline" data-lang="footer_tagline">Smash Burgers · Oude Markt 33 · Leuven</div>
+    </div>
+    <div class="footer-copy">© 2026 · Oude Markt 33 · 3000 Leuven · 100% Halal</div>
+    <div class="footer-links">
+      <a href="https://www.facebook.com/people/Cheat-burger-leuven/100076139349490" target="_blank" rel="noopener"><i class="fa-brands fa-facebook"></i> Facebook</a>
+      <a href="https://www.instagram.com/cheatburgersbrussels" target="_blank" rel="noopener"><i class="fa-brands fa-instagram"></i> Instagram</a>
+      <a href="https://deliveroo.be" target="_blank" rel="noopener"><i class="fa-solid fa-motorcycle"></i> Deliveroo</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ─── TRANSLATIONS ─────────────────────────────────────────── */
+const T = {
+  nl: {
+    nav_menu: 'Menu', nav_about: 'Over ons', nav_delivery: 'Bezorging', nav_contact: 'Contact', nav_cta: 'Bestel nu',
+    hero_sub: 'De beste smashburgers van Leuven',
+    icon_smash: 'Smash', icon_late: 'Open tot 05:00',
+    hero_cta1: 'Bekijk ons menu', hero_cta2: 'Bestel online',
+    hero_open: 'Vandaag open · 18:00 – 05:00',
+    badge1: 'Vers gesmashed', badge2: '100% Halal', badge3: 'Open tot 05:00', badge4: 'Bezorging beschikbaar',
+    bestseller: 'Bestseller',
+    b1_desc: 'Potato bun, gesmashed Angus beef, American cheese, ijsbergsla, augurk, ui, tomaat, smash saus',
+    b2_desc: '2x gesmashed Angus beef, 2x American cheese, alle toppings, crinkle fries inbegrepen',
+    b3_desc: 'Voor de echte hongerigen — onze grootste burger',
+    bri1_desc: 'Brioche bun, gesmashed Angus beef, American cheese, ijsbergsla, augurk, ui, tomaat, smash saus',
+    bri2_desc: 'Brioche bun, gesmashed Angus beef, halal bacon, American cheese, alle toppings',
+    bri3_desc: 'Barbecuesaus, 2x gesmashed Angus beef, triple cheddar, bacon, jalapeños',
+    ask_price: 'Vraag prijs',
+    brioche_chicken: 'Brioche Chicken Burger',
+    two_buns: '2 Bun Opties beschikbaar',
+    sides_chicken_label: 'Chicken & Sides',
+    sides_menus_label: "Menu's",
+    side1: 'Buffalo Chicken Wings BBQ', side2: 'Chicken Nuggets', side3: 'Mozzarella Sticks', side4: 'Onion Rings',
+    menu1_name: 'Spicy Tenders Menu (6 pcs + fries + cola)',
+    menu2_name: 'Nuggets Menu (6 pcs + fries + cola)',
+    menu3_name: 'Spicy Wings Menu (6 pcs + fries + cola)',
+    delivery_title: 'Vanavond trek? Wij bezorgen!',
+    delivery_sub: 'Bestel via Deliveroo of Takeaway.com en geniet van je cheat meal thuis.',
+    deliveroo_desc: 'Bestel via Deliveroo, binnen 32 minuten thuis',
+    deliveroo_cta: 'Bestel via Deliveroo',
+    takeaway_desc: 'Ook beschikbaar op Takeaway.com',
+    takeaway_cta: 'Bestel via Takeaway',
+    about_title: 'Geen poespas.\nGewoon goeie burgers.',
+    about_italic: 'Jouw cheat day verdient het beste.',
+    about_body: 'Cheat Burgers opende in 2018 op de iconische Oude Markt van Leuven. Elke burger wordt vers bereid met Angus beef, gesmashed tot perfectie. Open tot diep in de nacht — want cravings houden geen rekening met het uur.',
+    stat1: 'Since', stat3: 'Open tot',
+    contact_eyebrow: 'Contact',
+    hours_label: 'Openingsuren',
+    day_mon: 'Maandag', day_tue: 'Dinsdag', day_wed: 'Woensdag', day_thu: 'Donderdag',
+    day_fri: 'Vrijdag', day_sat: 'Zaterdag', day_sun: 'Zondag',
+    form_title: 'Stuur een bericht',
+    form_name: 'Naam', form_message: 'Bericht', form_submit: 'Verstuur →',
+    form_success: 'Bedankt! We antwoorden zo snel mogelijk.',
+    footer_tagline: 'Smash Burgers · Oude Markt 33 · Leuven',
+  },
+  en: {
+    nav_menu: 'Menu', nav_about: 'About', nav_delivery: 'Delivery', nav_contact: 'Contact', nav_cta: 'Order now',
+    hero_sub: 'The best smash burgers in Leuven',
+    icon_smash: 'Smash', icon_late: 'Open until 05:00',
+    hero_cta1: 'View our menu', hero_cta2: 'Order online',
+    hero_open: 'Open today · 18:00 – 05:00',
+    badge1: 'Freshly smashed', badge2: '100% Halal', badge3: 'Open until 05:00', badge4: 'Delivery available',
+    bestseller: 'Bestseller',
+    b1_desc: 'Potato bun, smashed Angus beef, American cheese, iceberg lettuce, pickles, onion, tomato, smash sauce',
+    b2_desc: '2x smashed Angus beef, 2x American cheese, all toppings, crinkle fries included',
+    b3_desc: 'For the seriously hungry — our biggest burger',
+    bri1_desc: 'Brioche bun, smashed Angus beef, American cheese, iceberg lettuce, pickles, onion, tomato, smash sauce',
+    bri2_desc: 'Brioche bun, smashed Angus beef, halal bacon, American cheese, all toppings',
+    bri3_desc: 'BBQ sauce, 2x smashed Angus beef, triple cheddar, bacon, jalapeños',
+    ask_price: 'Ask price',
+    brioche_chicken: 'Brioche Chicken Burger',
+    two_buns: '2 Bun Options available',
+    sides_chicken_label: 'Chicken & Sides',
+    sides_menus_label: 'Meal Deals',
+    side1: 'Buffalo Chicken Wings BBQ', side2: 'Chicken Nuggets', side3: 'Mozzarella Sticks', side4: 'Onion Rings',
+    menu1_name: 'Spicy Tenders Meal (6 pcs + fries + cola)',
+    menu2_name: 'Nuggets Meal (6 pcs + fries + cola)',
+    menu3_name: 'Spicy Wings Meal (6 pcs + fries + cola)',
+    delivery_title: 'Craving it tonight? We deliver!',
+    delivery_sub: 'Order via Deliveroo or Takeaway.com and enjoy your cheat meal at home.',
+    deliveroo_desc: 'Order via Deliveroo, home in 32 minutes',
+    deliveroo_cta: 'Order via Deliveroo',
+    takeaway_desc: 'Also available on Takeaway.com',
+    takeaway_cta: 'Order via Takeaway',
+    about_title: 'No nonsense.\nJust great burgers.',
+    about_italic: 'Your cheat day deserves the best.',
+    about_body: "Cheat Burgers opened in 2018 on Leuven's iconic Oude Markt. Every burger is freshly prepared with Angus beef, smashed to perfection. Open deep into the night — because cravings don't care about the time.",
+    stat1: 'Since', stat3: 'Open until',
+    contact_eyebrow: 'Contact',
+    hours_label: 'Opening Hours',
+    day_mon: 'Monday', day_tue: 'Tuesday', day_wed: 'Wednesday', day_thu: 'Thursday',
+    day_fri: 'Friday', day_sat: 'Saturday', day_sun: 'Sunday',
+    form_title: 'Send a message',
+    form_name: 'Name', form_message: 'Message', form_submit: 'Send →',
+    form_success: "Thanks! We'll get back to you soon.",
+    footer_tagline: 'Smash Burgers · Oude Markt 33 · Leuven',
+  }
+};
+
+let currentLang = localStorage.getItem('cb-lang') || 'nl';
+
+function setLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('cb-lang', lang);
+  document.querySelectorAll('[data-lang]').forEach(el => {
+    const key = el.getAttribute('data-lang');
+    if (T[lang][key] !== undefined) el.textContent = T[lang][key];
+  });
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
+  });
+}
+
+/* ─── TODAY ROW ─────────────────────────────────────────────── */
+(function markToday() {
+  const map = [null,'row-mon','row-tue','row-wed','row-thu','row-fri','row-sat','row-sun'];
+  const idx = new Date().getDay(); // 0=Sun
+  const rowId = idx === 0 ? 'row-sun' : map[idx];
+  const row = document.getElementById(rowId);
+  if (row) row.classList.add('today');
+})();
+
+/* ─── NAVBAR SCROLL ─────────────────────────────────────────── */
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').style.borderBottomColor =
+    window.scrollY > 60 ? 'rgba(224,32,32,0.25)' : 'rgba(245,240,232,0.08)';
+}, { passive: true });
+
+/* ─── HAMBURGER ─────────────────────────────────────────────── */
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('mobile-menu').classList.toggle('open');
+});
+function closeMobile() { document.getElementById('mobile-menu').classList.remove('open'); }
+
+/* ─── CONTACT FORM ──────────────────────────────────────────── */
+function submitForm(e) {
+  e.preventDefault();
+  document.getElementById('contact-form').style.display = 'none';
+  const s = document.getElementById('form-success');
+  s.style.display = 'block';
+  s.textContent = T[currentLang].form_success;
+}
+
+/* ─── SCROLL ANIMATIONS ─────────────────────────────────────── */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+/* ─── INIT ──────────────────────────────────────────────────── */
+setLang(currentLang);
+</script>
+</body>
+</html>
